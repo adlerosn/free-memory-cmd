@@ -1,0 +1,21 @@
+kind: pipeline
+type: exec
+name: default
+
+steps:
+  - name: compiler
+    commands:
+      - rustup install nightly
+      - rustup update 
+  - name: build
+    depends_on:
+      - clone
+      - compiler
+    commands:
+      - cargo build --release
+  - name: install
+    depends_on:
+      - build
+    commands:
+      - sudo install -m 0755 -o 0 -g 0 target/release/free-memory-cmd /usr/bin/free-memory-cmd
+    
